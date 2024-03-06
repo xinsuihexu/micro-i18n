@@ -1,0 +1,16 @@
+{
+  "recommendations": [
+    "Vue.volar",
+    "Vue.vscode-typescript-vue-plugin",
+    "antfu.unocss",
+    "dbaeumer.vscode-eslint",
+    "mrmlnc.vscode-csscomb",
+    "streetsidesoftware.code-spell-checker",
+    "usernamehw.errorlens",
+    "mhutchie.git-graph",
+    "donjayamanne.githistory",
+    "eamodio.gitlens",
+    "oderwat.indent-rainbow",
+    "zhuangtongfa.material-theme"
+  ]
+}

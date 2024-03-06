@@ -1,0 +1,66 @@
+/* 1 element-plus的变量可以在这里统一更改
+2 新增的颜色变量也可以在此定义，页面中使用，切记页面中不要单独使用写的的颜色 */
+
+html {
+  /* --el-component-size: 28px; */
+}
+
+html .el-table {
+  --el-table-header-bg-color: var(--el-fill-color-light);
+}
+
+html[lang^="ar"] {
+  direction: rtl;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  overflow: hidden;
+}
+
+#app {
+  height: 100%;
+}
+
+:root {
+  word-wrap: break-word;
+
+  font-size: 14px;
+}
+
+* {
+  /* unicode-bidi: bidi-override; */
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  /* background-color:transparent; */
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 16px;
+  background-color: var(--el-bg-color-page);
+  box-shadow: inset 2px 2px 2px hsl(0deg 0% 100% / 25%),
+  inset -6px -6px 2px rgb(0 0 0 / 25%);
+}
+
+.el-button {
+  height: var(--el-component-size);
+}
+
+.el-popper {
+  position: absolute !important;
+}
+
+html:has(.base-guide-flag-v1) #app {
+  pointer-events: none;
+}

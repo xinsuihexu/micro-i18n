@@ -1,0 +1,32 @@
+{
+  "name": "micro-test",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite"
+  },
+  "dependencies": {
+    "@popperjs/core": "2.11.4",
+    "@rollup/plugin-dynamic-import-vars": "^2.1.2",
+    "@vueuse/components": "^10.7.2",
+    "current-device": "^0.10.2",
+    "dayjs": "^1.11.10",
+    "eslint-plugin-format": "^0.1.0",
+    "nprogress": "^0.2.0",
+    "uuid": "^9.0.1",
+    "vue-i18n": "9",
+    "vue3-perfect-scrollbar": "^1.6.1"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^2.6.3",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.56.0",
+    "postcss": "^8.4.32",
+    "typescript": "^5.3.3"
+  }
+}
