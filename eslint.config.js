@@ -25,10 +25,10 @@ export default eslintConfig({
           },
         },
       ],
-      'vue/component-name-in-template-casing': ['error', 'PascalCase', {
-        registeredComponentsOnly: false,
-        ignores: [],
-      }],
+      // 'vue/component-name-in-template-casing': ['error', 'PascalCase', {
+      //   registeredComponentsOnly: false,
+      //   ignores: [],
+      // }],
       'vue/block-tag-newline': ['error', {
         maxEmptyLines: 1,
       }],
@@ -41,6 +41,9 @@ export default eslintConfig({
         ExportDeclaration: { multiline: true, minProperties: 2 },
       }],
     },
+  },
+  formatters: {
+    css: true,
   },
   ignores: ['*.d.ts', '*.json'],
 })

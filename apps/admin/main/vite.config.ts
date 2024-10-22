@@ -9,7 +9,7 @@ export default defineConfig(() => ({
   plugins: [
     vue({
       script: {
-        defineModel: true,
+        // defineModel: true,
         propsDestructure: true,
       },
     }),
@@ -31,7 +31,7 @@ export default defineConfig(() => ({
 
   resolve: {
     alias: {
-      '@admin-main': path.resolve(__dirname, './src'),
+      '@admin/main': path.resolve(__dirname, './src'),
     },
     extensions: ['.vue', '.js', '.ts', '.jsx', '.tsx', '.json', '.mjs'],
   },

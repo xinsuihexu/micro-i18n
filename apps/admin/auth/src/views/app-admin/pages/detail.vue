@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { RouteName } from '@admin-auth/enums/route'
+import { RouteName } from '@admin/auth/enums/route'
 
-// import useMicroStore from '@admin-auth/store/micro'
+// import useMicroStore from '@admin/auth/store/micro'
 import BaseInfoTitle from '@admin/_share/components/base/base-info-title/index.vue'
 import useMicroStore from '@admin/_share/store/micro'
 import useTabStore from '@admin/_share/store/tab'
@@ -116,9 +116,9 @@ function onTest() {
       <BaseInfoTitle title="我是标题" />
     </ElCard>
 
-    <!-- <ElButton @click="onTest">
-            关闭当前页并刷新应用管理页
-        </ElButton> -->
+    <ElButton @click="onTest">
+      关闭当前页并刷新应用管理页
+    </ElButton>
   </div>
 
   <ElBacktop

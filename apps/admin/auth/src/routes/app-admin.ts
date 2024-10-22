@@ -5,7 +5,7 @@ const appAdmin: RouteRecordRaw[] = [
   {
     path: RoutePath.appAdmin,
     name: RouteName.appAdmin,
-    component: () => import('@admin-auth/views/app-admin/index.vue'),
+    component: () => import('@admin/auth/views/app-admin/index.vue'),
     meta: {
       title: '权限中心-应用管理',
     },
@@ -13,7 +13,7 @@ const appAdmin: RouteRecordRaw[] = [
   {
     path: RoutePath.appAdminDetail,
     name: RouteName.appAdminDetail,
-    component: () => import('@admin-auth/views/app-admin/pages/detail.vue'),
+    component: () => import('@admin/auth/views/app-admin/pages/detail.vue'),
     meta: {
       title: '权限中心-应用管理-详情',
     },
@@ -21,7 +21,7 @@ const appAdmin: RouteRecordRaw[] = [
   {
     path: RoutePath.appAdminAnchor,
     name: RouteName.appAdminAnchor,
-    component: () => import('@admin-auth/views/app-admin/pages/anchor.vue'),
+    component: () => import('@admin/auth/views/app-admin/pages/anchor.vue'),
     meta: {
       title: '权限中心-应用管理-锚点',
     },

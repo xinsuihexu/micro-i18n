@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import { bus } from '@pkg/utils'
+import { Tree } from '@pkg/utils'
+import useMicroStore from '../../../store/micro'
 import useTabStore from '../../../store/tab'
+import type { IMenu } from '../../../store/menu'
+import useMenuStore from '../../../store/menu'
 import type { ITab } from '../../../store/tab'
 import { isMicro } from '../../../utils/env'
 import {
@@ -21,7 +24,9 @@ enum OperateType {
 const route = useRoute()
 const router = useRouter()
 
+const { getBus } = useMicroStore()
 const tabStore = useTabStore()
+const menuStore = useMenuStore()
 
 const paramsLanguage = computed(() => (new URLSearchParams(location.search).get('language') || DEFAULT_LANGUAGE))
 
@@ -79,26 +84,44 @@ watch(() => tabStore.getCurrentTabCode, (currentTabCode) => {
   if (!currentTabCode)
     return
 
-  if (isMicro(route)) {
-    bus.emit('sub-route-change', {
+  if (isMicro(route.path)) {
+    getBus.emit('sub-route-change', {
       appCode: tabStore.currentTab!.appCode,
       path: tabStore.currentTab!.path,
+      // params: route.params,
+      query: tabStore.currentTab?.query ?? {},
     })
-    router.push(`${MAIN_APP_SLOT_ROUTE_PATH}${tabStore.currentTab!.path}?language=${toValue(paramsLanguage)}`)
+
+    // router.push({
+    //   path: `${MAIN_APP_SLOT_ROUTE_PATH}${tabStore.currentTab!.path}`,
+    //   params: route.params,
+    //   query: route.query,
+    // })
   }
   else {
-    router.push(`${tabStore.currentTab!.path}?language=${toValue(paramsLanguage)}`)
+    router.push({
+      path: `${tabStore.currentTab!.path}`,
+      query: tabStore.currentTab?.query ?? {},
+    })
   }
 })
 
-bus.on('main-close-tab', ({
+// 用于子应用通过router.push的方式跳转，处理tab切换
+watch(() => route.path, (path) => {
+  const menu = new Tree().findNode(menuStore.menus, (menu: IMenu) => menu.path === path)
+  if (menu) {
+    tabStore.addTab(menu)
+  }
+})
+
+getBus.on('main-close-tab', ({
   tabCode,
   emitParams,
 }: { tabCode?: string, emitParams?: { eventName: string, params?: any } }) => {
   tabStore.removeTab(tabCode || tabStore.getCurrentTabCode)
 
   if (emitParams)
-    bus.emit(emitParams.eventName, emitParams.params)
+    getBus.emit(emitParams.eventName, emitParams.params)
 })
 
 </script>
@@ -160,7 +183,7 @@ bus.on('main-close-tab', ({
   grid-auto-flow: column;
   inline-size: 100%;
   overscroll-behavior-x: contain;
-  padding-block-start: .8rem;
+  padding-block-start: 0.8rem;
   padding-inline-end: 1rem;
   padding-inline-start: 1rem;
   scroll-snap-type: x mandatory;
@@ -217,5 +240,4 @@ bus.on('main-close-tab', ({
     background-color: var(--el-bg-color-page);
   }
 }
-
 </style>

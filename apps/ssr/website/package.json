@@ -1,0 +1,26 @@
+{
+  "name": "@ssr/website",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@element-plus/nuxt": "^1.0.9",
+    "@pinia-plugin-persistedstate/nuxt": "^1.2.1",
+    "@pinia/nuxt": "^0.5.2",
+    "element-plus": "^2.7.8",
+    "nprogress": "^0.2.0",
+    "nuxt": "^3.12.4",
+    "pinia": "^2.1.7",
+    "vue": "latest"
+  },
+  "devDependencies": {
+    "@unocss/nuxt": "^0.61.8",
+    "unocss": "^0.58.9"
+  }
+}

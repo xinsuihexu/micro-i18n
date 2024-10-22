@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouteName } from '@admin-auth/enums/route'
+import { RouteName } from '@admin/auth/enums/route'
 import BasePagination from '@admin/_share/components/base/base-pagination/index.vue'
 import BaseTable from '@admin/_share/components/base/base-table/index.vue'
 import BaseSelect from '@admin/_share/components/base/form/base-select/index.vue'
@@ -22,26 +22,29 @@ interface IState {
   schemas: any
 }
 
-const { $t } = useMicroStore()
+const {
+  $t,
+  getBus,
+} = useMicroStore()
 
-const steps = [
-  {
-    target: 'g-base-guide-test',
-    placement: 'bottom' as any,
-    popper: {
-      title: '标题1',
-      content: '内容1',
-    },
-  },
-  {
-    target: 'g-base-guide-test1',
-    placement: 'bottom',
-    popper: {
-      title: '标题2',
-      content: '内容2',
-    },
-  },
-]
+// const steps = [
+//   {
+//     target: 'g-base-guide-test',
+//     placement: 'bottom' as any,
+//     popper: {
+//       title: '标题1',
+//       content: '内容1',
+//     },
+//   },
+//   {
+//     target: 'g-base-guide-test1',
+//     placement: 'bottom',
+//     popper: {
+//       title: '标题2',
+//       content: '内容2',
+//     },
+//   },
+// ]
 
 const columns = [
   {
@@ -378,6 +381,12 @@ async function onEdit(row: any) {
   else
     state.editingRowKeys.splice(index, 1)
 }
+
+onMounted(() => {
+  getBus.on('test', (params) => {
+    console.log({ params })
+  })
+})
 </script>
 
 <template>

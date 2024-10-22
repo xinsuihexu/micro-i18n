@@ -18,11 +18,21 @@ export const router = createRouter({
   history: createWebHistory(import.meta.env.VITE_PUBLIC_PATH),
   routes: [
     ...routes,
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('@admin/_share/pages/login/index.vue'),
+    },
+    {
+      path: '/404',
+      name: '404',
+      component: () => import('@admin/_share/pages/404/index.vue'),
+    },
   ],
 })
 
 function createGuards(router: Router) {
-  // createPermissionGuard(router)
+  createPermissionGuard({ router })
   createProgressGuard(router)
   createRouteMapGuard(router, {})
   createPageTitleGuard(router)

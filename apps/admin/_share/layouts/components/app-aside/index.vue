@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { Tree } from '@pkg/utils'
 import { cloneDeep } from 'lodash-es'
+import { RoutePath } from '../../../../main/src/enums/route'
 import useTabStore from '../../../store/tab'
 import type { IMenu } from '../../../store/menu'
 import useMenuStore from '../../../store/menu'
@@ -30,6 +31,11 @@ const menus = computed(() => {
   return menus
 })
 
+function toHome() {
+  if (isMicro(route.path))
+    router.push(RoutePath.home)
+}
+
 function onSelect(code: string) {
   const menu = new Tree().findNode(toValue(menus), (node: IMenu) => node.code === code) as IMenu
 
@@ -39,7 +45,7 @@ function onSelect(code: string) {
 
   else {
     tabStore.addTab(menu)
-    if (!isMicro(route))
+    if (!isMicro(route.path))
       router.push(menu.path)
   }
 }
@@ -53,6 +59,8 @@ function onSelect(code: string) {
       flex
       justify-center
       items-center
+      :cursor="isMicro(route.path) ? 'pointer' : 'auto'"
+      @click="toHome"
     >
       LOGO
     </h1>
@@ -85,8 +93,8 @@ function onSelect(code: string) {
 }
 
 .app-aside__menu {
-  block-size: 100%;
   overflow: auto;
-}
 
+  block-size: 100%;
+}
 </style>

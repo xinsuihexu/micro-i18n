@@ -45,8 +45,8 @@ export const useAppStore = defineStore({
     setAppCode(code: string): IMenu[] {
       this.appCode = code
 
-      const tabStore = useTabStore()
-      tabStore.removeAllTabs()
+      // const tabStore = useTabStore()
+      // tabStore.removeAllTabs()
 
       const menus = this.getMenus(this.appCode)
 
@@ -60,7 +60,7 @@ export const useAppStore = defineStore({
       this.apps = list
 
       const localeStore = useLocaleStore()
-      console.log(this.appCode, localeStore.isLanguageChange)
+
       if (localeStore.isLanguageChange) {
         const menus = this.getMenus(this.appCode)
 
@@ -76,10 +76,13 @@ export const useAppStore = defineStore({
       if (this.appCode)
         return
 
-      const [firstApp] = this.apps
-      const activeApp = this.apps.find(app => app.active)!
+      if (appCode)
+        this.setAppCode(appCode)
 
-      this.setAppCode(appCode || (activeApp ? activeApp.code : firstApp.code))
+      // const [firstApp] = this.apps
+      // const activeApp = this.apps.find(app => app.active)!
+
+      // this.setAppCode(appCode || (activeApp ? activeApp.code : firstApp.code))
     },
   },
 

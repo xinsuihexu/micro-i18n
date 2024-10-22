@@ -1,13 +1,13 @@
 import { camelCase } from 'lodash-es'
 
 export enum RoutePath {
-  commonConfig = '/common-config',
-  dictAdmin = '/dict-admin',
+  home = '/home',
+  demo = '/demo',
 }
 
 type PathEnumKeys = keyof typeof RoutePath
 
-export const RouteName: { [k in PathEnumKeys]: string }
+export const RouteName: Record<PathEnumKeys, string>
     = Object
       .keys(RoutePath)
       .map((key) => {
@@ -17,4 +17,4 @@ export const RouteName: { [k in PathEnumKeys]: string }
       .reduce((pre, cur) => {
         pre[cur.key] = cur.value
         return pre
-      }, {} as { [k in PathEnumKeys]: string })
+      }, {} as Record<PathEnumKeys, string>)

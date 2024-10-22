@@ -2,14 +2,14 @@ import type { App } from 'vue'
 import { useInitApp } from '@admin/_share/hooks/initApp'
 import { UseModuleType } from '@admin/_share/enums'
 import useMicroStore from '@admin/_share/store/micro'
-import { TITLE } from './settings'
+import { APP_CODE, TITLE } from './settings'
 
 export default async function init(app: App) {
   const {
     installModules,
     setUserInfo,
     setLanguages,
-    // setApps,
+    setApps,
     setTitle,
     setTheme,
   } = useInitApp(app)
@@ -31,9 +31,11 @@ export default async function init(app: App) {
 
   const microStore = useMicroStore()
   if (!microStore.isMicro) {
-    setTheme()
     await setUserInfo()
-    await setLanguages()
-    // await setApps()
+    setTheme()
   }
+
+  await setLanguages()
+  if (!microStore.isMicro)
+    await setApps(APP_CODE)
 }

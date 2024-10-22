@@ -3,7 +3,6 @@ import eslintConfig from '@antfu/eslint-config'
 export default eslintConfig({
   vue: {
     overrides: {
-      'no-console': 'off',
       'vue/max-attributes-per-line': [
         'error',
         {
@@ -31,6 +30,14 @@ export default eslintConfig({
         ExportDeclaration: { multiline: true, minProperties: 2 },
       }],
     },
+  },
+  javascript: {
+    overrides: {
+      'no-console': 'off',
+    },
+  },
+  formatters: {
+    css: true,
   },
   ignores: ['*.d.ts', '*.json'],
 })

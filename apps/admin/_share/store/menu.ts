@@ -31,8 +31,9 @@ export const useMenuStore = defineStore({
     setMenus(list: IMenu[]) {
       this.menus = list
 
-      // const tabStore = useTabStore()
-      // tabStore.removeAllTabs()
+      const tabStore = useTabStore()
+      tabStore.removeAllTabs()
+      tabStore.addTab(this.menus[0])
     },
 
     updateMenus(list: IMenu[]) {

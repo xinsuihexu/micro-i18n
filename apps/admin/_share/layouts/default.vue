@@ -11,7 +11,10 @@ import useTabStore from '../store/tab'
 import useAppStore from '../store/app'
 import useLocaleStore from '../store/locale'
 import { isMicro } from '../utils/env'
-import { APP_URL_MAP } from '../settings'
+import {
+  APP_URL_MAP,
+  MAIN_APP_SLOT_ROUTE_PATH,
+} from '../settings'
 import AppAside from './components/app-aside/index.vue'
 import AppHeader from './components/app-header/index.vue'
 import AppTab from './components/app-tab/index.vue'
@@ -20,6 +23,7 @@ import Setting from './components/setting/index.vue'
 const state = reactive({ isCollapse: false })
 
 const route = useRoute()
+const i18n = useI18n()
 
 const appStore = useAppStore()
 const menuStore = useMenuStore()
@@ -27,17 +31,18 @@ const authStore = useAuthStore()
 const tabStore = useTabStore()
 const localeStore = useLocaleStore()
 
-const queryStr = new URLSearchParams(location.search).toString()
 const appUrl = computed(() => {
   const url = APP_URL_MAP[appStore.getAppCode][import.meta.env.VITE_ENV]
-  return queryStr ? `${url}/${route.params.path}?${queryStr}` : `${url}/${route.params.path}`
+  return url
 })
 
 function jumpApp({
   appCode,
-  path,
   menuCode,
-}: { appCode: string, path: string, menuCode: string }) {
+  path,
+  params = {},
+  query = {},
+}: { appCode: string, menuCode: string, path: string, params?: Record<string, any>, query?: Record<string, any> }) {
   if (appCode === appStore.getAppCode) {
     const menu = new Tree().findNode(menuStore.getMenus, (menu: IMenu) => menu.code === menuCode)
     tabStore.addTab(menu! || menuStore.getMenus[0])
@@ -47,30 +52,13 @@ function jumpApp({
     bus.emit('sub-route-change', {
       appCode,
       path,
+      params,
+      query,
     })
     const menu = new Tree().findNode(menus, (menu: IMenu) => menu.code === menuCode)
     tabStore.addTab(menu! || menus[0])
   }
 }
-
-watch(() => route.fullPath, (fullPath) => {
-  if (!isMicro(route)) {
-    const menu = new Tree().findNode(menuStore.menus, (menu: IMenu) => menu.path === new URL(fullPath, location.origin).pathname)
-    if (menu) {
-      const {
-        appCode,
-        path,
-        code,
-      } = menu
-      jumpApp({
-        appCode,
-        path,
-        menuCode: code,
-      })
-    }
-  }
-})
-
 </script>
 
 <template>
@@ -93,7 +81,7 @@ watch(() => route.fullPath, (fullPath) => {
       <div class="layout__main">
         <slot>
           <WujieVue
-            v-if="isMicro(route)"
+            v-if="isMicro(route.path)"
             width="100%"
             height="100%"
             :name="appStore.getAppCode"
@@ -108,7 +96,8 @@ watch(() => route.fullPath, (fullPath) => {
               getLocale: () => localeStore.getLocale,
               jump: jumpApp,
               setTitle: useTitle,
-              $t,
+              $t: i18n.t,
+              deleteToken: authStore.deleteToken,
             }"
           />
 
@@ -130,18 +119,20 @@ watch(() => route.fullPath, (fullPath) => {
 
 <style lang="less" scoped>
 .layout {
+  display: grid;
   --aside-min-width: 150px;
   --header-height: 48px;
   --tab-height: 39px;
   --main-height: calc(100vh - var(--header-height) - var(--tab-height));
 
-  display: grid;
-  grid-template-areas: "aside header"
-  "aside tab"
-  "aside main";
+  grid-template-areas:
+    'aside header'
+    'aside tab'
+    'aside main';
   grid-template-columns: max-content 1fr;
   grid-template-rows: var(--header-height) var(--tab-height) var(--main-height);
   min-block-size: 100vh;
+
   &__aside {
     grid-area: aside;
     max-inline-size: fit-content;
@@ -165,6 +156,7 @@ watch(() => route.fullPath, (fullPath) => {
 
     &-wrapper {
       overflow-y: auto;
+
       background-color: var(--el-bg-color-page);
 
       grid-area: main;
@@ -178,5 +170,4 @@ watch(() => route.fullPath, (fullPath) => {
     }
   }
 }
-
 </style>

@@ -7,31 +7,9 @@ import {
   isNumber,
   isString,
 } from 'lodash-es'
+import type { IProps } from './type'
 
-interface ISchema {
-  title: string
-  field: string
-  column: number
-  component: {
-    vm: any
-    value: any
-    props?: Record<string, any>
-    listeners?: Record<string, Function>
-  }
-}
-
-interface IProps {
-  schemas: ISchema[]
-  gap?: number
-  defaultExpand?: boolean
-  triggerHideRow?: number
-  minItemWidth?: number
-}
-
-defineOptions({
-  name: 'UiFormSearch',
-  inheritAttrs: false,
-})
+defineOptions({ name: 'UiFormSearch' })
 
 const props = withDefaults(
   defineProps<IProps>(),
@@ -178,7 +156,7 @@ onBeforeUnmount(() => {
     <div class="page-search__content">
       <template
         v-for="(item, index) in props.schemas"
-        :key="item.index"
+        :key="index"
       >
         <div
           v-if="index < hideIndex"
@@ -192,7 +170,6 @@ onBeforeUnmount(() => {
           <Component
             :is="item.component.vm"
             v-model="item.component.value"
-            class="w-full"
             v-bind="item.component.props"
             v-on="item.component.listeners || {}"
           />
@@ -225,17 +202,18 @@ onBeforeUnmount(() => {
 <style lang="less" scoped>
 .page-search {
   display: flex;
-  column-gap: 12px;
   align-items: flex-start;
+
+  column-gap: 12px;
 }
 
 .page-search__content {
   display: grid;
-  flex: 1;
+  flex-grow: 1;
 
-    grid-auto-flow: row dense;
-    grid-gap: var(--grid-gap);
-    grid-template-columns: repeat(auto-fit, minmax(var(--min-item-width), 1fr));
+  grid-gap: var(--grid-gap);
+  grid-auto-flow: row dense;
+  grid-template-columns: repeat(auto-fill, minmax(var(--min-item-width), 1fr));
 }
 
 .page-search__item {
@@ -253,10 +231,13 @@ onBeforeUnmount(() => {
 
 .page-search__item-title {
   display: grid;
+
   min-width: fit-content;
+
+  color: #999;
+
   padding-inline-start: 8px;
   place-items: center;
-  color: #999;
 }
 
 .page-search__btn {
@@ -265,8 +246,8 @@ onBeforeUnmount(() => {
   justify-content: flex-start;
 
   width: fit-content;
-  margin-inline-start: auto;
 
+  margin-inline-start: auto;
   column-gap: 8px;
   row-gap: 8px;
 }
@@ -297,7 +278,8 @@ onBeforeUnmount(() => {
 }
 
 :deep(.el-button + .el-button) {
-  margin-inline-start: 0;
   margin-left: 0;
+
+  margin-inline-start: 0;
 }
 </style>

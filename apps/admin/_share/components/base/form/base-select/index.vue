@@ -46,7 +46,6 @@ setList()
 <template>
   <ElSelect
     v-model="modelValue"
-    class="w-full"
     clearable
     collapse-tags
     collapse-tags-tooltip

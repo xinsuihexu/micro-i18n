@@ -1,77 +1,106 @@
 <script setup lang="ts">
-import { RouteName } from '@admin-auth/enums/route'
-
-// import useMicroStore from '@admin-auth/store/micro'
+import { RouteName } from '@admin/auth/enums/route'
+import {
+  RouteName as ConfigRouteName,
+  RoutePath,
+} from '@admin/config/src/enums/route'
+import BasePagination from '@admin/_share/components/base/base-pagination/index.vue'
+import BaseTable from '@admin/_share/components/base/base-table/index.vue'
+import UiFormSearch from '@admin/_share/components/business/ui-form-search/index.vue'
+import UiPageListContainer from '@admin/_share/components/business/ui-page-list-container/index.vue'
 import useMicroStore from '@admin/_share/store/micro'
+import { AppCodeType } from '@admin/_share/enums/index'
+import {
+  columns,
+  schemas,
+} from './config'
+import type { IState } from './type'
 
 defineOptions({ name: RouteName.appAdmin })
 
-const microStore = useMicroStore()
+const state = reactive<IState>({
+  schemas,
+  tableData: [],
+  pagination: {
+    page: 1,
+    size: 20,
+    total: 0,
+  },
+})
+
+const {
+  $t,
+  getProps,
+} = useMicroStore()
+
 const router = useRouter()
 
-function onTest() {
-  microStore.getProps.jump({
-    appCode: 'config',
-    path: '/dict-admin?a=1&b=2',
-    menuCode: 'config__dict',
-  })
+function onSearch(model: any) {
+  console.log({ model })
 }
 
-function onTest1() {
-  router.push('/menu-admin')
+function onReset(model: any) {
+  console.log({ model })
 }
 
-function onTest2() {
-  router.push('/app-admin/detail?language=en')
-}
-
-function onTest3() {
-  router.push('/app-admin/detail111111')
-}
-
-function onTest4() {
-  router.push('app-admin/anchor')
-}
-
-function onTest5() {
-  router.push('app-admin/coupon')
-}
-
-if (microStore.isMicro) {
-  microStore.getBus.on('auth_app-admin-list', (data: any) => {
-    console.log({ data })
+function onAdd() {
+  // getProps.jump({
+  //   appCode: AppCodeType.CONFIG,
+  //   menuCode: ConfigRouteName.home,
+  //   path: RoutePath.home,
+  //   query: {
+  //     a: 1,
+  //     b: 2,
+  //   },
+  // })
+  router.push({
+    path: '/menu-admin',
+    query: {
+      a: 2,
+      b: 4,
+    },
   })
 }
 </script>
 
 <template>
-  <div class="p-12px">
-    我是应用管理
+  <UiPageListContainer>
+    <template #search>
+      <UiFormSearch
+        :schemas="state.schemas"
+        @reset="onReset"
+        @search="onSearch"
+      />
+    </template>
 
-    <ElSpace wrap>
-      <ElButton @click="onTest()">
-        跳转到配置中心应用的字典管理页
-      </ElButton>
+    <template #operation>
+      <ElSpace wrap>
+        <ElButton
+          type="primary"
+          @click="onAdd"
+        >
+          {{ $t('新增') }}
+        </ElButton>
+      </ElSpace>
+    </template>
 
-      <ElButton @click="onTest1">
-        跳转同应用的菜单页面
-      </ElButton>
+    <template #table>
+      <BaseTable
+        row-key-prop="id"
+        :columns="columns"
+        :data="state.tableData"
+      >
+        1111
+      </BaseTable>
+    </template>
 
-      <ElButton @click="onTest2">
-        跳转到同应用的应用管理详情页
-      </ElButton>
-
-      <ElButton @click="onTest3">
-        跳转到一个没有权限的页面
-      </ElButton>
-
-      <ElButton @click="onTest4">
-        跳转anchor页
-      </ElButton>
-
-      <ElButton @click="onTest5">
-        跳转coupon页
-      </ElButton>
-    </ElSpace>
-  </div>
+    <template #pagination>
+      <BasePagination
+        v-if="state.pagination.total > 0"
+        v-model:page="state.pagination.page"
+        v-model:size="state.pagination.size"
+        :total="state.pagination.total"
+      />
+    </template>
+  </UiPageListContainer>
 </template>

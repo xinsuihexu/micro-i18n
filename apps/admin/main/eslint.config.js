@@ -42,5 +42,8 @@ export default eslintConfig({
       }],
     },
   },
+  formatters: {
+    css: true,
+  },
   ignores: ['*.d.ts', '*.json'],
 })

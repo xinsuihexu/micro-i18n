@@ -1,4 +1,5 @@
 import { camelCase } from 'lodash-es'
+import { AppCodeType } from '@admin/_share/enums'
 
 export enum RoutePath {
   appAdmin = '/app-admin',
@@ -14,7 +15,7 @@ export const RouteName: { [k in PathEnumKeys]: string }
       .keys(RoutePath)
       .map((key) => {
         const k = key as PathEnumKeys
-        return { key: k, value: camelCase(`${RoutePath[k]}`) }
+        return { key: k, value: camelCase(`${AppCodeType.AUTH}${RoutePath[k]}`) }
       })
       .reduce((pre, cur) => {
         pre[cur.key] = cur.value

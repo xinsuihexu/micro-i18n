@@ -8,8 +8,8 @@ export default async function init(app: App) {
   const {
     installModules,
     setUserInfo,
-    // setLanguages,
-    // setApps,
+    setLanguages,
+    setApps,
     setTitle,
     setTheme,
   } = useInitApp(app)
@@ -28,9 +28,10 @@ export default async function init(app: App) {
     })
   })
 
+  await setUserInfo()
+  await setLanguages()
+  await setApps()
+
   setTitle()
   setTheme()
-
-  await setUserInfo()
-  // await setLanguages()
 }

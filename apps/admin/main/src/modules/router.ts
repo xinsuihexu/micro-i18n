@@ -1,6 +1,7 @@
 import { UseModuleType } from '@admin/_share/enums'
 import {
   createPageTitleGuard,
+  createPermissionGuard,
   createProgressGuard,
   createRouteMapGuard,
 } from '@admin/_share/route-guards'
@@ -18,14 +19,20 @@ export const router = createRouter({
   routes: [
     ...routes,
     {
+      path: '/login',
+      name: 'login',
+      component: () => import('@admin/_share/pages/login/index.vue'),
+    },
+    {
       path: '/404',
       name: '404',
-      component: () => import('@admin/_share/layouts/404.vue'),
+      component: () => import('@admin/_share/pages/404/index.vue'),
     },
   ],
 })
 
 function createGuards(router: Router) {
+  createPermissionGuard({ router, isMainApp: true })
   createProgressGuard(router)
   createRouteMapGuard(router, {})
   createPageTitleGuard(router)

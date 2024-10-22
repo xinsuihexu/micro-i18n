@@ -37,13 +37,17 @@ function onChangeApp(code: string) {
   if (code === appStore.getAppCode)
     return
 
-  if (isMicro(route)) {
+  if (isMicro(route.path)) {
     const [firstMenu] = appStore.setAppCode(code)
     tabStore.addTab(firstMenu)
 
-    bus.emit('sub-route-change', {
-      appCode: code,
-      path: '/',
+    nextTick(() => {
+      setTimeout(() => {
+        bus.emit('sub-route-change', {
+          appCode: code,
+          path: '/',
+        })
+      }, 1000)
     })
   }
   else {
@@ -71,7 +75,7 @@ function onChangeApp(code: string) {
       <Fullscreen />
     </div>
 
-    <Breadcrumb class="ml-12px mr-12px" />
+    <BreadCrumb class="ml-12px mr-12px" />
 
     <div class="app-header__right">
       <BaseSelect
@@ -112,5 +116,4 @@ function onChangeApp(code: string) {
   column-gap: 12px;
   margin-inline-start: auto;
 }
-
 </style>

@@ -1,0 +1,18 @@
+{
+  "name": "@h5/_share",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "i18n:scan": "node .locale.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "@pkg/utils": "workspace:^",
+    "wujie-polyfill": "^1.0.11"
+  },
+  "devDependencies": {
+    "lodash-es": "^4.17.21"
+  }
+}

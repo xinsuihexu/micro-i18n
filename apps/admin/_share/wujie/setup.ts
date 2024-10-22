@@ -1,6 +1,8 @@
 import WuJie from 'wujie-vue3'
+import { LocationReloadPlugin } from 'wujie-polyfill'
 import useAppStore from '../store/app'
 import lifecycle from './lifecycle'
+// import { APP_URL_MAP } from '../settings'
 
 const {
   setupApp,
@@ -16,10 +18,11 @@ export function setup() {
       name: code,
       exec: false,
       alive: true,
-      sync: false,
+      sync: true,
       degrade: !window.Proxy,
       ...lifecycle,
       plugins: [
+        // LocationReloadPlugin(),
         {
           // 在子应用所有的css之前
           cssBeforeLoaders: [
@@ -43,10 +46,11 @@ export function setup() {
   })
 
   // apps.forEach(({ code }) => {
+  //     console.log('url>>>', APP_URL_MAP[code][import.meta.env.VITE_ENV])
   //     preloadApp({
-  //         url: '',
+  //         url: APP_URL_MAP[code][import.meta.env.VITE_ENV],
   //         name: code,
-  //         exec: false,
+  //         exec: true,
   //         alive: false,
   //         degrade: !window.Proxy,
   //     })

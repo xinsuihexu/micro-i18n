@@ -1,23 +1,40 @@
-// import { useTitle } from '@vueuse/core'
 import type { App } from 'vue'
-
-// import { LANGUAGE, TITLE } from './settings'
-// import type { ILanguageType } from './store/locale'
-// import useLocaleStore from './store/locale'
-
-// const existLanguage = localStorage.getItem('_locale') as any
-
-function installModules(app: App) {
-  Object.values(import.meta.glob('./modules/*.ts', { eager: true })).forEach((i: any) => i.install?.(app))
-}
-
-// export const changeLanguage = async (language: ILanguageType) => {
-//     const localeStore = useLocaleStore()
-//     localeStore.changeLanguage(language)
-// }
+import { useInitApp } from '@admin/_share/hooks/initApp'
+import { UseModuleType } from '@admin/_share/enums'
+import useMicroStore from '@admin/_share/store/micro'
+import { TITLE, APP_CODE } from './settings'
 
 export default async function init(app: App) {
-  await installModules(app)
-  // useTitle(TITLE)
-  // await changeLanguage(existLanguage || LANGUAGE)
+  const {
+    installModules,
+    setUserInfo,
+    setLanguages,
+    setApps,
+    setTitle,
+    setTheme,
+  } = useInitApp(app)
+
+  installModules([
+    UseModuleType.PINIA,
+    UseModuleType.UI,
+    UseModuleType.I18N,
+  ], () => {
+    Object.values(import.meta.glob('./modules/*.ts', { eager: true })).forEach((i: any) => {
+      const isNeedInstall = [UseModuleType.ROUTER].includes(i?.moduleType)
+
+      if (isNeedInstall)
+        i?.install(app)
+    })
+  })
+
+  setTitle(TITLE)
+
+  const microStore = useMicroStore()
+  if (!microStore.isMicro) {
+    await setUserInfo()
+    setTheme()
+  }
+  await setLanguages()
+  if (!microStore.isMicro)
+      await setApps(APP_CODE)
 }

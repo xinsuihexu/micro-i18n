@@ -1,11 +1,16 @@
 import { defineStore } from 'pinia'
 import type { Emitter } from 'mitt'
 import { Tree } from '@pkg/utils'
+import parseUrl from 'parse-url'
+import { isMicro } from '../utils/env'
 import useMenuStore from './menu'
+import useAppStore from './app'
 import type { IMenu } from './menu'
 
 export interface ITab extends IMenu {
   popoverVisible?: boolean
+  query?: Record<string, any>
+  active?: boolean
 }
 
 interface IState {
@@ -54,6 +59,19 @@ export const useTabStore = defineStore({
         this.changeTab(tab.code)
         return
       }
+
+      // 手动添加上url参数,用于切换tab时可以保留参数状态
+      const appStore = useAppStore()
+      let query = Object.create(null)
+      for (const [k, v] of new URLSearchParams(location.search).entries()) {
+        if (isMicro(location.pathname) && k === appStore.getAppCode) {
+          query = parseUrl(`${location.origin}${v}`).query
+        }
+        else {
+          query[k] = v
+        }
+      }
+      tab.query = query
 
       this.tabs.push(tab)
       this.changeTab(tab.code)

@@ -28,7 +28,8 @@ export default defineConfig({
 
   resolve: {
     alias: {
-      '@admin-auth': path.resolve(__dirname, './src'),
+      '@admin/auth': path.resolve(__dirname, './src'),
+      '@admin': path.resolve(__dirname, '../../admin'),
     },
     extensions: ['.vue', '.js', '.ts', '.jsx', '.tsx', '.json', '.mjs'],
     dedupe: ['vue'],

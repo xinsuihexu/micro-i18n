@@ -2,11 +2,11 @@
 import Layout from '@admin/_share/layouts/default.vue'
 import useLocaleStore from '@admin/_share/store/locale'
 import useMicroStore from '@admin/_share/store/micro'
-import type { LanguageType } from '@admin/_share/enums'
-import { DEFAULT_LANGUAGE } from '@admin/_share/settings'
 import { APP_CODE } from './settings'
 
-const i18n = useI18n()
+const show = ref(false)
+
+const route = useRoute()
 
 const localeStore = useLocaleStore()
 const microStore = useMicroStore()
@@ -14,12 +14,10 @@ const microStore = useMicroStore()
 if (microStore.getIsMicro) {
   microStore.startWatch(APP_CODE)
 }
-else {
-  localeStore.setLanguage(DEFAULT_LANGUAGE, (language: LanguageType, locale: any) => {
-    i18n.locale.value = language
-    i18n.setLocaleMessage(language, locale)
-  })
-}
+
+const isNeedLayout = computed(() => {
+  return !['login', '404'].includes(route.name as string) && !microStore.getIsMicro
+})
 
 const locale = computed(() => {
   return microStore.getIsMicro
@@ -27,12 +25,30 @@ const locale = computed(() => {
     : localeStore.getLocale
 })
 
+onMounted(() => {
+  setTimeout(() => {
+    show.value = true
+  }, 10)
+})
+
 </script>
 
 <template>
-  <ElConfigProvider :locale="locale">
+  <ElConfigProvider
+    v-if="show"
+    :locale="locale"
+  >
+    <Layout v-if="isNeedLayout">
+      <div class="app-main">
+        <RouterView v-slot="{ Component: C }">
+          <KeepAlive>
+            <Component :is="C" />
+          </KeepAlive>
+        </RouterView>
+      </div>
+    </Layout>
+
     <div
-      v-if="microStore.getIsMicro"
       class="app-main"
     >
       <RouterView
@@ -43,16 +59,6 @@ const locale = computed(() => {
         </KeepAlive>
       </RouterView>
     </div>
-
-    <Layout v-else>
-      <div class="app-main">
-        <RouterView v-slot="{ Component: C }">
-          <KeepAlive>
-            <Component :is="C" />
-          </KeepAlive>
-        </RouterView>
-      </div>
-    </Layout>
   </ElConfigProvider>
 </template>
 
@@ -62,5 +68,4 @@ const locale = computed(() => {
 
   block-size: 100%;
 }
-
 </style>
